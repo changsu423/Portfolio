@@ -12,8 +12,14 @@ def fetch_data(tickers, start_date, end_date):
     """
     주어진 티커에 대한 주가 데이터를 가져옵니다.
     """
-    data = yf.download(tickers, start=start_date, end=end_date)['Adj Close']
-    return data
+    data = yf.download(tickers, start=start_date, end=end_date)
+    
+    # 'Adj Close' 필드 확인
+    if 'Adj Close' not in data.columns:
+        raise ValueError("'Adj Close' 데이터를 찾을 수 없습니다. 선택한 자산에 대해 지원되지 않을 수 있습니다.")
+    
+    return data['Adj Close']
+
 
 def calculate_annualized_return_and_volatility(weights, returns):
     """
